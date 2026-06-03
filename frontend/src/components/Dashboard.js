@@ -5,7 +5,7 @@ import {
   Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 
-const API = 'http://127.0.0.1:8000/api';
+const API = 'https://standup-logger-backend.onrender.com/api';
 
 function Dashboard() {
   const [stats, setStats] = useState([]);
