@@ -98,4 +98,4 @@ Frontend runs at: `http://localhost:3000`
 
 ## 🌐 Live Demo
 
-[Click here to view the live app](YOUR_DEPLOYMENT_LINK_HERE)
+[Click here to view the live app](https://moonlit-treacle-e68904.netlify.app)
