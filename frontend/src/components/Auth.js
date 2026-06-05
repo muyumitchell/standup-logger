@@ -28,7 +28,7 @@ function Auth({ onLogin }) {
     setLoading(false);
   };
 
-  return (
+ return (
     <div className="auth-container">
       <div className="auth-card">
         <h1>🚀 Standup Logger</h1>
