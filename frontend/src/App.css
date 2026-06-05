@@ -544,3 +544,41 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   font-size: 0.85rem;
   cursor: pointer;
 }
+/* DEMO BUTTON */
+.demo-divider {
+  text-align: center;
+  color: #6b8f71;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.demo-divider::before,
+.demo-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.2);
+}
+
+.demo-divider::before { left: 0; }
+.demo-divider::after { right: 0; }
+
+.demo-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: rgba(255,255,255,0.06);
+  color: #a8c5a0;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.demo-btn:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-1px);
+  opacity: 1;
+}
