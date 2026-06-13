@@ -60,12 +60,6 @@ function Auth({ onLogin }) {
           {loading ? '⏳ Please wait...' : isLogin ? '🔐 Sign In' : '✨ Create Account'}
         </button>
 
-        <div className="demo-divider">or</div>
-
-        <button className="demo-btn" onClick={() => onLogin('Guest')}>
-          👀 View as Guest
-        </button>
-
         <div className="auth-toggle">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <span onClick={() => { setIsLogin(!isLogin); setError(''); }}>
