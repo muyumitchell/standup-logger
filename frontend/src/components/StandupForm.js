@@ -3,20 +3,10 @@ import axios from 'axios';
 
 const API = 'https://standup-logger-backend.onrender.com/api';
 
-const TEAM_MEMBERS = [
-  'Alice Kamau',
-  'Brian Omondi',
-  'Carol Wanjiku',
-  'David Mutua',
-  'Mitchell Muyu',
-  'Other'
-];
-
-function StandupForm({ onPostSubmitted }) {
+function StandupForm({ currentUser, onPostSubmitted }) {
   const [form, setForm] = useState({
-    author: '', yesterday: '', today: '', blockers: '', has_blocker: false
+    author: currentUser || '', yesterday: '', today: '', blockers: '', has_blocker: false
   });
-  const [customName, setCustomName] = useState('');
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -24,8 +14,7 @@ function StandupForm({ onPostSubmitted }) {
 
   const validate = () => {
     const e = {};
-    const name = form.author === 'Other' ? customName : form.author;
-    if (!name.trim()) e.author = 'Please select or enter your name';
+    if (!form.author.trim()) e.author = 'Please enter your name';
     if (!form.yesterday.trim()) e.yesterday = 'Please describe what you did yesterday';
     if (!form.today.trim()) e.today = 'Please describe what you are doing today';
     return e;
@@ -36,9 +25,8 @@ function StandupForm({ onPostSubmitted }) {
     if (Object.keys(e).length > 0) { setErrors(e); return; }
     setSubmitting(true);
     try {
-      const finalName = form.author === 'Other' ? customName : form.author;
       const data = new FormData();
-      data.append('author', finalName);
+      data.append('author', form.author);
       data.append('yesterday', form.yesterday);
       data.append('today', form.today);
       data.append('blockers', form.blockers);
@@ -46,8 +34,7 @@ function StandupForm({ onPostSubmitted }) {
       if (file) data.append('attachment', file);
       await axios.post(`${API}/standups/`, data);
       setSuccess(true);
-      setForm({ author: '', yesterday: '', today: '', blockers: '', has_blocker: false });
-      setCustomName('');
+      setForm({ author: currentUser || '', yesterday: '', today: '', blockers: '', has_blocker: false });
       setFile(null);
       setErrors({});
       if (onPostSubmitted) onPostSubmitted();
@@ -72,29 +59,14 @@ function StandupForm({ onPostSubmitted }) {
 
       <div className="field">
         <label>Your Name</label>
-        <select
+        <input
           value={form.author}
           onChange={e => setForm({...form, author: e.target.value})}
+          placeholder="Enter your name"
           className={errors.author ? 'error-input' : ''}
-        >
-          <option value="">— Select your name —</option>
-          {TEAM_MEMBERS.map(name => (
-            <option key={name} value={name}>{name}</option>
-          ))}
-        </select>
+        />
         {errors.author && <span className="error-text">{errors.author}</span>}
       </div>
-
-      {form.author === 'Other' && (
-        <div className="field">
-          <label>Enter Your Name</label>
-          <input
-            value={customName}
-            onChange={e => setCustomName(e.target.value)}
-            placeholder="Type your full name"
-          />
-        </div>
-      )}
 
       <div className="field">
         <label>What did you do yesterday?</label>

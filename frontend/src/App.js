@@ -40,7 +40,7 @@ function App() {
         <p>Post your daily updates and see what your team is working on</p>
       </header>
       <div className="app-body">
-        <StandupForm />
+        <StandupForm currentUser={user} />
         <Feed currentUser={user} />
       </div>
       <Dashboard />

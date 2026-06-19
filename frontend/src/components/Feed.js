@@ -3,16 +3,6 @@ import axios from 'axios';
 
 const API = 'https://standup-logger-backend.onrender.com/api';
 
-const TEAM_MEMBERS = [
-  'All Members',
-  'Alice Kamau',
-  'Brian Omondi',
-  'Carol Wanjiku',
-  'David Mutua',
-  'Mitchell Muyu',
-  'Other'
-];
-
 function getWeatherIcon(code) {
   if (code === 0) return '☀️';
   if (code <= 2) return '⛅';
@@ -29,7 +19,7 @@ function Feed({ currentUser }) {
   const [weatherError, setWeatherError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(false);
-  const [filterMember, setFilterMember] = useState('All Members');
+  const [filterName, setFilterName] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [search, setSearch] = useState('');
   const [editingPost, setEditingPost] = useState(null);
@@ -85,14 +75,14 @@ function Feed({ currentUser }) {
   };
 
   const filteredPosts = posts.filter(post => {
-    const matchMember = filterMember === 'All Members' || post.author === filterMember;
+    const matchName = !filterName || post.author.toLowerCase().includes(filterName.toLowerCase());
     const matchDate = !filterDate || post.timestamp.startsWith(filterDate);
     const matchSearch = !search ||
       post.author.toLowerCase().includes(search.toLowerCase()) ||
       post.yesterday.toLowerCase().includes(search.toLowerCase()) ||
       post.today.toLowerCase().includes(search.toLowerCase()) ||
       post.blockers.toLowerCase().includes(search.toLowerCase());
-    return matchMember && matchDate && matchSearch;
+    return matchName && matchDate && matchSearch;
   });
 
   const blockerCount = filteredPosts.filter(p => p.has_blocker).length;
@@ -124,20 +114,20 @@ function Feed({ currentUser }) {
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-        <select value={filterMember} onChange={e => setFilterMember(e.target.value)}>
-          {TEAM_MEMBERS.map(m => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
+        <input
+          placeholder="👤 Filter by name..."
+          value={filterName}
+          onChange={e => setFilterName(e.target.value)}
+        />
         <input
           type="date"
           value={filterDate}
           onChange={e => setFilterDate(e.target.value)}
         />
-        {(filterMember !== 'All Members' || filterDate || search) && (
+        {(filterName || filterDate || search) && (
           <button
             className="clear-filter"
-            onClick={() => { setFilterMember('All Members'); setFilterDate(''); setSearch(''); }}
+            onClick={() => { setFilterName(''); setFilterDate(''); setSearch(''); }}
           >
             ✕ Clear
           </button>
